@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sy.dao.OrdersMapper">
+    <insert id="ordersSave" parameterType="com.sy.pojo.Orders">
+        insert into orders (o_no, e_id, o_time, o_cost, o_descript)
+         values (#{orders.ONo},#{orders.EId},#{orders.OTime},#{orders.OCost},#{orders.ODescript});
+    </insert>
+
+    <delete id="deleteOrders">
+        delete from orders where o_no in
+         <foreach collection="o_nos" item="o_no" open="(" separator="," close=")">
+            #{o_no}
+         </foreach>
+    </delete>
+
+    <select id="findAll" resultType="com.sy.pojo.Orders">
+        select * from orders
+    </select>
+</mapper>

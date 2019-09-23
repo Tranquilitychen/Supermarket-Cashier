@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sy.dao.GoodsMapper">
+    <insert id="addGoods" parameterType="com.sy.pojo.Goods">
+        insert into goods (g_no, gt_no, g_name, g_descript,
+                           g_barcode, g_unit, g_price, g_state,
+                           g_count, e_id, exhibit_time)
+        values (#{goods.GNo},#{goods.gtNo},#{goods.GName},#{goods.GDescript},
+                #{goods.GBarcode},#{goods.GUnit},#{goods.GPrice},#{goods.GState},
+                #{goods.GCount},#{goods.EId},#{goods.exhibitTime});
+    </insert>
+    <!--多条删除-->
+    <delete id="delete">
+        delete from goods where g_no in 
+        <foreach collection="g_nos" item="g_no" open="(" separator="," close=")">
+            #{g_no}
+        </foreach>
+    </delete>
+    <select id="selAllGoods" resultType="com.sy.pojo.Goods">
+        select *from goods
+    </select>
+    <select id="getlastgNo" resultType="com.sy.pojo.Goods">
+        select * from goods where gt_no= #{gtNo}
+        order by g_no desc
+        limit 1
+    </select>
+</mapper>

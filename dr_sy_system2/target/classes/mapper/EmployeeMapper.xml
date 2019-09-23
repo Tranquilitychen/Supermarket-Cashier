@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sy.dao.EmployeeMapper">
+    <!--保存员工-->
+    <insert id="save" parameterType="com.sy.pojo.Employee">
+        insert into employee (e_id, e_idCard,e_name, e_rfid,
+                              e_password, e_sex, e_birthday,
+                              e_jointime, e_phone,
+                              e_state, e_icon, e_level)
+        values (#{employee.eId},#{employee.eIdCard},#{employee.eName},#{employee.eRfid},
+                #{employee.ePassword},#{employee.eSex},#{employee.eBirthday},
+                #{employee.eJointime},#{employee.ePhone},
+                #{employee.eState},#{employee.eIcon},#{employee.eLevel});
+    </insert>
+    <!--更新员工的状态-->
+    <update id="updatestate">
+         update employee set e_state=#{status} where e_Id=#{eId}
+    </update>
+    <!--多条删除-->
+    <delete id="delete">
+        delete from employee where e_id in
+        <foreach collection="e_ids" item="e_id" open="(" separator="," close=")">
+            #{e_id}
+        </foreach>
+
+    </delete>
+
+    <select id="findAll" resultType="com.sy.pojo.Employee">
+      select * from employee
+    </select>
+    <select id="findByName" resultType="com.sy.pojo.Employee">
+        select * from employee where e_rfid = #{name} limit 1
+    </select>
+    <!--获取最新员工-->
+    <select id="getLastEmpl" resultType="com.sy.pojo.Employee">
+        select *from employee where e_level=#{level}
+        order by e_id desc
+        limit 1
+    </select>
+
+</mapper>

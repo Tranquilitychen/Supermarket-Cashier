@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sy.dao.GoodstypeMapper">
+
+    <insert id="save" parameterType="com.sy.pojo.Goodstype">
+        insert into goodstype (gt_no, gt_name,gt_descript,
+                                gt_state,gt_remark,gt_pno,
+                                gt_level)
+        values (#{goodstype.gtNo},#{goodstype.gtName},#{goodstype.gtDescript},
+                #{goodstype.gtState},#{goodstype.gtRemark},#{goodstype.gtPno},
+                #{goodstype.gtLevel})
+    </insert>
+    <select id="allFind" resultType="com.sy.pojo.Goodstype">
+        select  * from goodstype
+    </select>
+
+    <!--通过名字来查询-->
+    <select id="findByName" resultType="com.sy.pojo.Goodstype">
+        select * from goodstype gt_name=#{name} limit 1
+    </select>
+    <!--多条删除-->
+    <delete id="delete">
+        delete from goodstype where gt_no in
+        <foreach collection="gt_nos" item="gt_no" open="(" separator="," close=")">
+            #{gt_no}
+        </foreach>
+    </delete>
+    <!--修改-->
+    <update id="updateState">
+        update goodstype set gt_state=#{status} where gt_no=#{gtNo}
+    </update>
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sy.dao.CateMapper">
+	<select id="selAll"  resultType="com.sy.pojo.Goodstype" >
+   		select * from goodstype
+   	</select>
+
+	<select id="selLastGoodsType" resultType="com.sy.pojo.Goodstype">
+		select * from goodstype order BY gt_no DESC limit 1
+	</select>
+
+	<select id="selGoodsTypeRepeat" resultType="com.sy.pojo.Goodstype">
+		select * from goodstype where gt_name = #{gtName}
+	</select>
+
+	<select id="selChildrenType" resultType="java.lang.String">
+		select MAX(gt_no) from goodstype where gt_no LIKE #{gtNo}"%"
+	</select>
+
+	<select id="selTypeForGtNo" resultType="com.sy.pojo.Goodstype">
+		select * from goodstype where gt_no = #{gtNo}
+	</select>
+
+	<insert id="insGoodsTypeParent">
+		insert into goodstype (gt_no, gt_name, gt_descript, gt_state, gt_remark, gt_pno, gt_level, gt_isparent)
+			VALUES (#{gtNo},#{gtName},#{gtDescript}, #{gtState},#{gtRemark},#{gtPno},#{gtLevel},#{gtIsparent})
+	</insert>
+
+	<update id="updGoodsTypeIsParent">
+		update goodstype set gt_isparent = #{gtIsparent} where gt_no=#{gtNo}
+	</update>
+
+	<update id="updGoodsTypeDescript">
+		update goodstype set gt_name = #{gtName}, gt_descript=#{gtDescript}, gt_remark=#{gtRemark} where gt_no=#{gtNo}
+	</update>
+
+	<update id="updCateState">
+		  update goodstype set gt_state = #{status} where gt_no = #{gtNo}
+	</update>
+
+	<delete id="delAllGoodsType">
+		delete from goodstype where gt_no in
+		<foreach collection="gt_nos" item="gt_no" open="(" separator="," close=")">
+			#{gt_no}
+		</foreach>
+	</delete>
+
+	<select id="selGoodsByGtNo" resultType="com.sy.pojo.Goods">
+		select * from goods where gt_no in
+		<foreach collection="gt_nos" item="gt_no" open="(" separator="," close=")">
+			#{gt_no}
+		</foreach>
+	</select>
+
+	<select id="selGoodsTypeByGtNo" resultType="com.sy.pojo.Goodstype">
+		select * from goodstype where gt_pno = #{gtNo}
+	</select>
+
+</mapper>

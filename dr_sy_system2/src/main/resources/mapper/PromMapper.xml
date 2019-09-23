@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sy.dao.PromMapper">
+    <select id="findAll" resultType="com.sy.pojo.EventRecord">
+        select * from event_record
+    </select>
+
+    <insert id="Save" parameterType="com.sy.pojo.EventRecord">
+        insert into event_record(ev_no, et_no, e_id, ev_begintime,
+                                 ev_endtime, ev_state, ev_name)
+        values (#{eventRecord.evNo}, #{eventRecord.etNo}, #{eventRecord.EId},
+        #{eventRecord.evBegintime},#{eventRecord.evEndtime}, #{eventRecord.evState},
+        #{eventRecord.evName})
+    </insert>
+
+
+    <select id="getLastProm" resultType="com.sy.pojo.EventRecord">
+        select * from event_record
+        order by ev_no desc
+        limit 1;
+    </select>
+    <select id="findAllType" resultType="com.sy.pojo.Event">
+        select * from event
+    </select>
+
+    <update id="updateState">
+       update event_record set ev_state=#{status} where e_evno=#{evno}
+   </update>
+
+    <delete id="delete">
+        delete from event_record where ev_no in
+        <foreach collection="evNos" item="evNo" open="(" separator="," close=")">
+            #{evNo}
+        </foreach>
+    </delete>
+
+    <delete id="deleteType">
+        delete from event where et_no in
+        <foreach collection="etNos" item="etNo" open="(" separator="," close=")">
+            #{etNo}
+        </foreach>
+    </delete>
+
+    <insert id="SaveType" parameterType="com.sy.pojo.Event">
+        insert into event (et_no, et_typename, et_descript, et_state) values
+        (#{event.etNo}, #{event.etTypename}, #{event.etDescript}, #{event.etState})
+    </insert>
+
+
+</mapper>
